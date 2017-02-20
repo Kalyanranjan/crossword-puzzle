@@ -1,0 +1,60 @@
+<template name="createDictTemplate">
+  <form class="form-horizontal col-md-offset-1 col-md-10" name="createDictForm" id="createDictForm">
+    <fieldset>
+
+    <!-- Form Name -->
+    <legend>Create a new Dictionary</legend>
+
+    <!-- Text input-->
+    <div class="form-group">
+      <label class="col-md-3 control-label" for="dictName">Name</label>
+      <div class="col-md-5">
+      <input id="dictName" name="dictName" type="text" placeholder="Dictionary Name" class="form-control input-md" required="">
+
+      </div>
+    </div>
+
+    <!-- Textarea -->
+    <div class="form-group">
+      <label class="col-md-3 control-label" for="dictDesc">Description (optional)</label>
+      <div class="col-md-5">
+        <textarea class="form-control dictDescta" id="dictDesc" name="dictDesc" placeholder="Give a description what the dictionary is about (example - Game Of Thrones: Match these Houses in GoT with the location they are in)"></textarea>
+      </div>
+    </div>
+
+    <!-- Textarea -->
+    <div class="form-group">
+      <label class="col-md-3 control-label" for="dictPair">Pairs</label>
+      <div class="col-md-5">
+        <textarea class="form-control dictPairTA" id="dictPair" name="dictPair" required="" placeholder="Write the word and clue separated by double dashes (--) on different lines. Example:
+
+Riverrun -- House Tully
+Winterfell -- House Stark, etc."></textarea>
+      </div>
+    </div>
+
+    <!-- Multiple Checkboxes -->
+    <div class="form-group">
+      <label class="col-md-3 control-label" for="makePublic"></label>
+      <div class="col-md-5">
+      <div class="checkbox">
+        <label for="makePublic-0">
+          <input type="checkbox" name="makePublic" id="makePublic-0">
+          Make Public
+        </label>
+    	</div>
+      </div>
+    </div>
+
+    <!-- Button -->
+    <div class="form-group">
+      <label class="col-md-3 control-label" for="singlebutton"></label>
+      <div class="col-md-5">
+        <button id="submitNewDict" name="submit" class="btn btn-primary">Submit</button>
+      </div>
+    </div>
+
+    </fieldset>
+    </form>
+
+</template>
