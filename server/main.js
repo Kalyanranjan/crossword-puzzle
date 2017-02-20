@@ -20,10 +20,7 @@ Meteor.methods({
                             makePublic: dMakePublic,
                           });
     return true;
+  },
 
-  //   if (trim(name === "")) {
-  //
-  //   console.log("We here bitches");
-   }
 
 });

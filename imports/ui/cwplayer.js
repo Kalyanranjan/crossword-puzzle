@@ -1,18 +1,29 @@
-import { Templates } from 'meteor/templating';
+import { Template } from 'meteor/templating';
+import { PairDictionaries } from '../../lib/collections.js';
+import { Session } from 'meteor/session';
 
 import './cwplayer.css';
 import './cwplayer.html';
 
-var CW;
-Template.cwPlayerTemplate.rendered = (function() {
+var CW, dictData;
+var dictId;
+
+Template.cwPlayerTemplate.onCreated(function() {
+    dictId = FlowRouter.getParam('dictId');
+});
+
+Template.cwPlayerTemplate.onRendered(function() {
+
     function printGrid(a) {
         $("#cwContent").html(a);
         $("#submitCwBtn").toggleClass('hideIt');
     }
+
+
     function printLegend(b) {
         var html = "";
         for (var key in b) {
-            html += '<div class="col-xs-6 col-md-6 text-left clues">';
+            html += '<div class="col-xs-6 col-lg-6 text-left clues">';
             html += "<h4>"+key+"</h4>";
             for (var s in b[key]) {
                 html += b[key][s]['position']+". "+b[key][s]['clue']+"<br />";
@@ -21,40 +32,46 @@ Template.cwPlayerTemplate.rendered = (function() {
         }
         $("#cwLegend").html(html);
     }
-    function getAndUpdate(callback1, callback2) {
-        CW = getCw();
-        if (CW.success) {
-            var noAnsGrid = CW.gridWithoutAns;
-            var legend = CW.gridLegend;
-            setTimeout(function() {
-                callback1(noAnsGrid);
-                console.log(legend);
-                callback2(legend);
-            }, 500);
-        } else {
-            $("#cwContent").text("Could not generate crossword. Please refresh.");
-        }
 
+    function getAndUpdate(callback1, callback2) {
+        setTimeout(function() {
+            dictData = PairDictionaries.findOne({"_id": dictId});
+
+            CW = getCw(dictData.pairs);
+            if (CW.success) {
+                var noAnsGrid = CW.gridWithoutAns;
+                var legend = CW.gridLegend;
+                setTimeout(function() {
+                    callback1(noAnsGrid);
+                    callback2(legend);
+                }, 500);
+            } else {
+                $("#cwContent").text("Could not generate crossword. Please refresh.");
+            }
+
+        }, 500);
     }
     getAndUpdate(printGrid, printLegend);
+
 });
 
 Template.cwPlayerTemplate.events({
     'click .goBack': function(event) {
-        FlowRouter.go('/dashboard');
+        Router.go('/');
     },
     'click .checkCW':function(event) {
         // console.log(CW);
         $(".checkCW").toggleClass("hideIt");
         var len = CW.gridLength;
         var arr = CW.gridArray;
-        console.log(len);
+        // console.log(len);
         var inp, inptd, v;
         var total=0, wrong=0, right=0;
         for (var i=0; i<len; i++) {
             for (var j=0; j<len; j++) {
-                inp = $("#pcrInp"+i+"c"+j);
-                inptd = $("#pcr"+i+"c"+j);
+
+                inp = $("#inputR"+i+"C"+j);
+                inptd = $("#cellsR"+i+"C"+j);
                 v = arr[i*len+j];
                 if (v != 0) {
                     if (v.toUpperCase() == inp.val().toUpperCase()) {
@@ -65,40 +82,45 @@ Template.cwPlayerTemplate.events({
                         wrong++;
                     }
                     total++;
-                    inptd.attr("title", inp.val().toUpperCase());
+                    inptd.attr("title", (inp.val().toUpperCase()?inp.val().toUpperCase():"(blank)"));
                     inp.val(v.toUpperCase());
+
                 }
             }
         }
         $(".result").toggleClass("hideIt");
         $(".resultInst").toggleClass("hideIt");
         $(".result").html("You got <b>"+right+"</b> correct out of <b>"+total+"</b> total letters.");
+
+        // let user = Meteor.userId();
+        // let colId = dictId;
+        // let colTitle = dictData = Pairs.findOne({"_id": id}).title;
+        // let score = Math.floor((right*100)/total);
+        // let date = new Date();
+        //
+        // Scores.insert({
+        //     "userId": user,
+        //     "dictId": colId,
+        //     "dictTitle": colTitle,
+        //     "score": score,
+        //     "date": date
+        // });
     }
 });
 
-Template.cwPlayerTemplate.helpers({
+function getCw(data) {
 
-})
-function getCw(wo, hi) {
-	let words = ["alarm", "orange", "guacomole", "mango", "potato"];
-	let hints = ["Sleep's eternal enemy", "Big sweet lime", "Avocado", "Fruit, not db", "From Peru with Carbs"];
-	// console.log(words);
-
-	let cw = new Crossword(words, hints);
-	let grid = cw.getSquareGrid(1000000000000);
-    var vals;
-	if (cw.getBadWords()) {
-        vals = {'success' : 0};
-	} else {
-        vals = {'success' : 1,
-                'gridLength': grid.length,
-                'gridWidth': grid[0].length,
-                'gridArray': CrosswordCells.toArrayOfCells(grid),
-                'gridWithoutAns': CrosswordUtils.toHtml(grid, false),
-                'gridWithAns': CrosswordUtils.toHtml(grid, true),
-                'gridLegend': cw.getLegend(grid)};
-    }
-	return vals;
+	let cw = new Crossword(data.words, data.clues);
+	let grid = cw.getSquareGrid(10000);
+    var vals = {
+            'success' : 1,
+            'gridLength': grid.length,
+            'gridWidth': grid[0].length,
+            'gridArray': CrosswordCells.toArrayOfCells(grid),
+            'gridWithoutAns': CrosswordUtils.toHtml(grid, false),
+            'gridWithAns': CrosswordUtils.toHtml(grid, true),
+            'gridLegend': cw.getLegend(grid)};
+    return vals;
 
 }
 
@@ -528,17 +550,17 @@ var CrosswordUtils = {
 
                 if(is_start_of_word) {
                     var img_url = CrosswordUtils.PATH_TO_PNGS_OF_NUMBERS + label + ".png";
-                    html.push("<td id='pcr"+r+"c"+c+"' class='" + css_class + "' style=\"background-image:url('" + img_url + "')\">");
+                    html.push("<td id='cellsR"+r+"C"+c+"' class='" + css_class + "' style=\"background-image:url('" + img_url + "')\">");
                     label++;
                 } else {
-                    html.push("<td id='pcr"+r+"c"+c+"' class='" + css_class + "'>");
+                    html.push("<td id='cellsR"+r+"C"+c+"' class='" + css_class + "'>");
                 }
 
                 if(cell != null) {
 	                if(show_answers) {
 	                    html.push(char);
 	                } else {
-	                    html.push("<input type='text' class='cellInput' maxlength='1' id='pcrInp"+r+"c"+c+"'>");
+	                    html.push("<input type='text' class='cellInput' maxlength='1' id='inputR"+r+"C"+c+"'>");
 	                }
             	}
             }

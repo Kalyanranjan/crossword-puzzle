@@ -1,4 +1,4 @@
-import { Templates } from 'meteor/templating';
+import { Template } from 'meteor/templating';
 
 import './createDictionary.css';
 import './createDictionary.html';
@@ -18,11 +18,12 @@ Template.createDictTemplate.events({
             newline: "",	// auto-detect
             quoteChar: '"',};
     let data = Papa.parse(pairs, papaConfig);
-    pairs = {};
+    let wo =[]; let cl = [];
     for (i=0; i<data.data.length; i++) {
-      pairs[i] = {word: data.data[i][0].toUpperCase().replace(/\s/g, ''),
-                  clue: data.data[i][1]};
+      wo.push(data.data[i][0].toUpperCase().replace(/\s/g, ''));
+      cl.push(data.data[i][1])
     }
+    pairs = {words: wo, clues: cl};
 
     if (name.replace(/\s/g, '') === '') {
       alert("Dictionary Name not Valid");

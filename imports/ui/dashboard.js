@@ -1,4 +1,29 @@
-import { Templates } from 'meteor/templating';
+import { Template } from 'meteor/templating';
+import { PairDictionaries } from '../../lib/collections.js';
 
 import './dashboard.css';
 import './dashboard.html';
+
+Template.dashboardTemplate.helpers({
+  'publicDicts'() {
+    return PairDictionaries.find({'makePublic': true});
+  },
+
+  'privateDicts'() {
+    return PairDictionaries.find({'makePublic': true});
+  },
+
+  'getDict'(id) {
+    return PairDictionaries.find({'_id': id});
+  }
+});
+
+Template.dashboardTemplate.events({
+  // 'click .dictList'(event) {
+  //   event.preventDefault();
+  //
+  //   let pairsId = event.target.id;
+  //   FlowRouter.go('/cwplayer/'+pairsId);
+  //
+  // }
+});

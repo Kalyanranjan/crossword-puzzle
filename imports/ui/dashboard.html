@@ -1,3 +1,12 @@
 <template name="dashboardTemplate">
   <a href="/cwplayer">THIS IS THE DASHBOARD TEMPLATE</a>
+  <ul>
+    {{#each publicDicts}}
+      {{> dictListTemplate}}
+    {{/each}}
+  </ul>
+</template>
+
+<template name="dictListTemplate">
+	<li class="dictList" id={{_id}}><a href="/cwplayer/{{_id}}">{{name}} - {{desc}}</a></li>
 </template>
