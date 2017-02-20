@@ -13,11 +13,29 @@ Template.createDictTemplate.events({
     let pairs = tar.dictPair.value;
     let makePublic = tar.makePublic.checked;
 
-    
+    let papaConfig = {
+            delimiter: "--",	// auto-detect
+            newline: "",	// auto-detect
+            quoteChar: '"',};
+    let data = Papa.parse(pairs, papaConfig);
+    pairs = {};
+    for (i=0; i<data.data.length; i++) {
+      pairs[i] = {word: data.data[i][0].toUpperCase().replace(/\s/g, ''),
+                  clue: data.data[i][1]};
+    }
 
-    let m = Meteor.call('insertDict', name, desc, pairs, makePublic,
+    if (name.replace(/\s/g, '') === '') {
+      alert("Dictionary Name not Valid");
+      return;
+    }
+
+    let m = Meteor.call('insertDict', name, desc, pairs, null, makePublic,
       function(error, result) {
-          console.log(result);
+          if (result == true) {
+            FlowRouter.redirect('/dashboard');
+          } else {
+            alert("Some Error Occurred! Try Again.");
+          }
       });
   }
 
