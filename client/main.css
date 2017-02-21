@@ -46,25 +46,37 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
+a:hover {
+	text-decoration: none;
+}
 
 /*Custom CSS*/
+html {
+	height: 100vh;
+}
 body {
-	/*background-image: url('https://cdn.pixabay.com/photo/2016/06/07/21/14/crossword-puzzle-1442657_960_720.jpg');*/
+	background-image: url('/images/cwpuzzle.jpg');
 	background-repeat: no-repeat;
   background-position: right top;
   background-attachment: fixed;
 	background-size: cover;
-	/*color: #ffffff;*/
-	/*background: url();*/
+	color: #ffffff;
 }
 .mainBody {
-	background-color: rgba(0, 0, 0, 0.6);
+	background-color: rgba(0, 0, 0, 0.7);
 	overflow: visible;
+	min-height: 100vh;
+	height: 100%;
 
 }
 /*------------NAVBAR CSS---------------*/
 nav, .navbar  {
 	background-color: #110A0A;
+	color: #E8E6E6;
+}
+.navbar-brand h2 {
+	color: #E8E6E6;
+	text-transform: uppercase;
 }
 .mainWrapper {
 	/*min-height: 85vh;*/
@@ -72,5 +84,9 @@ nav, .navbar  {
 }
 footer{
 	position: fixed;
-	bottom: 0;
+	bottom: 0px;
+	height: 10pt;
+	font-size: 10pt;
+	text-align: right;
+	color: #110A0A;
 }

@@ -1,16 +1,31 @@
+template.cwPlayerTemplate {
+	background-color: #E8E6E6;
+	color: #110A0A;
+}
 .cwPlayerWrapper {
-	background-color: #FFFFFF;
+	background-color: #E8E6E6;
 	min-height: calc(100vh - 50px);
 	/*color: white;*/
 	text-align: center;
 	align-content: center;
 	align-items: center;
 
-	min-width: 500px;
+	min-width: 600px;
 	margin: 0 auto;
-	width: 70vw;
-	padding: 20px 0px 20px 0px;
-	padding-top: 10vh;
+	width: 80vw;
+
+	padding: 0px 0px 20px 0px;
+	padding-top: 10px;
+}
+
+.cwTitle {
+	font-size: 20px;
+	font-weight: bolder;
+	color: #110A0A;
+}
+.cwDesc {
+	color: #110A0A;
+	padding-bottom: 10px;
 }
 
 table.cwPuzzleMain{
@@ -42,19 +57,48 @@ input.cellInput {
 	background-color: transparent;
 }
 .cwLegend {
-	height: 250px;
+	min-height: 250px;
+	width: 100%;
+	padding: 40px 0px 0px 10vw;
+
+	color:  #110A0A;
+	font-size: 13pt;
+
+}
+.submitBtn {
+	padding-top: 20px;
+	width: 100%;
+	display: block;
+}
+.submitBtn .btn {
+	display: inline;
+	font-weight: bolder;
+	min-width: 150px;
 }
 .hideIt {
 	display: none;
 }
 .wrongAns{
-	background-color: #e04646;
+	background-color: #E04646;
 	color: white
 }
 .rightAns {
 	background-color: #6cbc35;
 	color: white;
 }
+.result, .resultInst {
+	color: #110A0A;
+}
+.result {
+	padding-top: 10px;
+}
 .clues {
-	padding-left: 40px;
+	color:  #110A0A;
+	height: inherit;
+	padding-right: 20px;
+}
+.clues h4 {
+	font-size: 20pt;
+	font-weight: bolder;
+	text-transform: capitalize;
 }

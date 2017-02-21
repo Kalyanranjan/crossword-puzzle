@@ -1,12 +1,32 @@
-<template name="dashboardTemplate">
-  <a href="/cwplayer">THIS IS THE DASHBOARD TEMPLATE</a>
-  <ul>
-    {{#each publicDicts}}
-      {{> dictListTemplate}}
-    {{/each}}
-  </ul>
+<template name="dashboardTemplate" class="dashboardTemplate">
+  <div class="col-xs-12 col-md-7 dictListDiv">
+    <ul>
+      {{#each publicDicts}}
+        {{> dictListTemplate}}
+      {{/each}}
+    </ul>
+  </div>
+  <div class="col-xs-12 col-md-5 createNewDiv">
+    <div class="newDivInnerFlex">
+      <h2>OR</h2>
+      <div class="createOwn">
+        create your own crossword here
+        <a href="/createDict" class="linktoCreate">
+          <div class="linktoCreateDiv">
+            Create
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
 </template>
 
 <template name="dictListTemplate">
-	<li class="dictList" id={{_id}}><a href="/cwplayer/{{_id}}">{{name}} - {{desc}}</a></li>
+	<li class="dictList col-xs-12" id={{_id}}><a href="/cwplayer/{{_id}}">
+  <div class="dictName">
+    {{name}}
+  </div>
+  <div class="dictDesc">{{desc}}</div>
+
+   </a></li>
 </template>

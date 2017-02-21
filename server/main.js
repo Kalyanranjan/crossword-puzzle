@@ -4,6 +4,9 @@ import { PairDictionaries } from '../lib/collections.js';
 
 Meteor.startup(() => {
   // code to run on server at startup
+  Meteor.publish('pairDictionaries', function pairDictPublication() {
+    return PairDictionaries.find();
+  });
 });
 
 Meteor.methods({
@@ -21,6 +24,4 @@ Meteor.methods({
                           });
     return true;
   },
-
-
 });

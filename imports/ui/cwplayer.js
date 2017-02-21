@@ -10,6 +10,9 @@ var dictId;
 
 Template.cwPlayerTemplate.onCreated(function() {
     dictId = FlowRouter.getParam('dictId');
+    this.autorun(() => {
+      this.subscribe('pairDictionaries');
+    });
 });
 
 Template.cwPlayerTemplate.onRendered(function() {
@@ -17,6 +20,8 @@ Template.cwPlayerTemplate.onRendered(function() {
     function printGrid(a) {
         $("#cwContent").html(a);
         $("#submitCwBtn").toggleClass('hideIt');
+        $(".cwTitle").html(dictData.name);
+        $(".cwDesc").html(dictData.desc);
     }
 
 
